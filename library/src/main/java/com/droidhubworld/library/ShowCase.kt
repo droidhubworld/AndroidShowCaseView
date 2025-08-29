@@ -15,9 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.ScrollView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
 import com.droidhubworld.library.calback.OnShowCaseMessageViewListener
 import com.droidhubworld.library.calback.ShowCaseListener
 import com.droidhubworld.library.calback.ShowCaseSequenceListener
@@ -58,7 +56,6 @@ class ShowCase(builder: ShowCaseBuilder) {
     //ShowCaseMessageView params
     private val mImage: Drawable? = builder.mImage
     private val mTitle: String? = builder.mTitle
-    private val mScrollView: NestedScrollView? = builder.mScrollView
     private val mSubtitle: String? = builder.mSubtitle
     private val mCloseAction: Drawable? = builder.mCloseAction
     private val mBackgroundColor: Int? = builder.mBackgroundColor

@@ -104,7 +104,6 @@ class ScrollViewActivity : AppCompatActivity() {
     ): ShowCaseBuilder {
         return ShowCaseBuilder(this)
             .title(showCaseData.title)
-            .scrollView(mBinding.mainScrollView)
             .description(showCaseData.description)
             .backgroundColor(ContextCompat.getColor(this,R.color.teal_700))
             .targetView(showCaseData.view)

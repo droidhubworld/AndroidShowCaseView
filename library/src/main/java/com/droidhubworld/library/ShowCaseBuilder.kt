@@ -16,7 +16,6 @@ import java.util.ArrayList
 class ShowCaseBuilder {
     internal var mActivity: WeakReference<Activity>? = null
     internal var mImage: Drawable? = null
-    internal var mScrollView: NestedScrollView? = null
     internal var mTitle: String? = null
     internal var mSubtitle: String? = null
     internal var mCloseAction: Drawable? = null
@@ -44,13 +43,6 @@ class ShowCaseBuilder {
         mActivity = WeakReference(activity)
     }
 
-    /**
-     * ScrollView of the ShowCase.
-     */
-    fun scrollView(scrollView: NestedScrollView): ShowCaseBuilder {
-        mScrollView = scrollView
-        return this
-    }
     /**
      * Title of the ShowCase. This text is bolded in the view.
      */
