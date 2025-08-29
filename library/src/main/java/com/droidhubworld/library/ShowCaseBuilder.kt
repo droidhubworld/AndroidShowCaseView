@@ -5,7 +5,9 @@ import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import com.droidhubworld.library.calback.ShowCaseListener
 import com.droidhubworld.library.calback.ShowCaseSequenceListener
 import java.lang.ref.WeakReference
@@ -14,6 +16,7 @@ import java.util.ArrayList
 class ShowCaseBuilder {
     internal var mActivity: WeakReference<Activity>? = null
     internal var mImage: Drawable? = null
+    internal var mScrollView: NestedScrollView? = null
     internal var mTitle: String? = null
     internal var mSubtitle: String? = null
     internal var mCloseAction: Drawable? = null
@@ -41,6 +44,13 @@ class ShowCaseBuilder {
         mActivity = WeakReference(activity)
     }
 
+    /**
+     * ScrollView of the ShowCase.
+     */
+    fun scrollView(scrollView: NestedScrollView): ShowCaseBuilder {
+        mScrollView = scrollView
+        return this
+    }
     /**
      * Title of the ShowCase. This text is bolded in the view.
      */

@@ -1,5 +1,6 @@
 package com.droidhubworld.showcaseview
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -29,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonSimpleShowCase.setOnClickListener { getSimpleShowCaseBuilder().show() }
-        binding.buttonColorShowCase.setOnClickListener { getCustomColorShowCaseBuilder().show() }
+        binding.buttonColorShowCase.setOnClickListener { startActivity(Intent(this,
+            ScrollViewActivity::class.java)) }
         binding.editText.setOnClickListener { getEditCustomColorShowCaseBuilder().show() }
         binding.buttonTextSizeShowCase.setOnClickListener { getTextSizeShowCaseBuilder().show() }
         binding.buttonArrowLeftShowCase.setOnClickListener { getArrowLeftShowCaseBuilder().show() }
