@@ -1,5 +1,5 @@
 package com.droidhubworld.library.calback
 
 interface ShowCaseSequenceListener {
-    fun onDismiss()
+    fun onDismiss(skip: Boolean = false)
 }

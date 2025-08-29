@@ -12,6 +12,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.droidhubworld.library.calback.OnShowCaseMessageViewListener
@@ -30,6 +31,9 @@ class ShowCaseMessageView : ConstraintLayout {
     private var imageViewIcon: ImageView? = null
     private var textViewTitle: TextView? = null
     private var textViewSubtitle: TextView? = null
+    private var btnSkip: AppCompatButton? = null
+    private var btnNext: AppCompatButton? = null
+    private var btnDividerView: View? = null
     private var imageViewClose: ImageView? = null
     private var showCaseMessageViewLayout: ConstraintLayout? = null
 
@@ -69,20 +73,23 @@ class ShowCaseMessageView : ConstraintLayout {
         imageViewClose = findViewById(R.id.imageViewShowCaseClose)
         textViewTitle = findViewById(R.id.textViewShowCaseTitle)
         textViewSubtitle = findViewById(R.id.textViewShowCaseText)
+        btnSkip = findViewById(R.id.btn_skip)
+        btnNext = findViewById(R.id.btn_next)
+        btnDividerView = findViewById(R.id.btn_divider_view)
         showCaseMessageViewLayout = findViewById(R.id.showCaseMessageViewLayout)
     }
 
-    private fun setAttributes(builder: Builder){
-        if(builder.mImage!=null){
+    private fun setAttributes(builder: Builder) {
+        if (builder.mImage != null) {
             imageViewIcon?.visibility = View.VISIBLE
             imageViewIcon?.setImageDrawable(builder.mImage!!)
         }
-        if(builder.mCloseAction!=null){
+        if (builder.mCloseAction != null) {
             imageViewClose?.visibility = View.VISIBLE
             imageViewClose?.setImageDrawable(builder.mCloseAction!!)
         }
 
-        if(builder.mDisableCloseAction!=null && builder.mDisableCloseAction!!){
+        if (builder.mDisableCloseAction != null && builder.mDisableCloseAction!!) {
             imageViewClose?.visibility = View.INVISIBLE
         }
 
@@ -94,24 +101,47 @@ class ShowCaseMessageView : ConstraintLayout {
             textViewSubtitle?.visibility = View.VISIBLE
             textViewSubtitle?.text = builder.mSubtitle
         }
+        builder.mShowButtons?.let {
+            if (it) {
+                btnNext?.visibility = VISIBLE
+                btnSkip?.visibility = VISIBLE
+                btnDividerView?.visibility = VISIBLE
+            } else {
+                btnNext?.visibility = GONE
+                btnSkip?.visibility = GONE
+                btnDividerView?.visibility = GONE
+            }
+        } ?: {
+            btnNext?.visibility = GONE
+            btnSkip?.visibility = GONE
+            btnDividerView?.visibility = GONE
+        }
         builder.mTextColor?.let {
             textViewTitle?.setTextColor(builder.mTextColor!!)
             textViewSubtitle?.setTextColor(builder.mTextColor!!)
         }
         builder.mTitleTextSize?.let {
-            textViewTitle?.setTextSize(TypedValue.COMPLEX_UNIT_SP, builder.mTitleTextSize!!.toFloat())
+            textViewTitle?.setTextSize(
+                TypedValue.COMPLEX_UNIT_SP,
+                builder.mTitleTextSize!!.toFloat()
+            )
         }
         builder.mSubtitleTextSize?.let {
-            textViewSubtitle?.setTextSize(TypedValue.COMPLEX_UNIT_SP, builder.mSubtitleTextSize!!.toFloat())
+            textViewSubtitle?.setTextSize(
+                TypedValue.COMPLEX_UNIT_SP,
+                builder.mSubtitleTextSize!!.toFloat()
+            )
         }
         builder.mBackgroundColor?.let { mBackgroundColor = builder.mBackgroundColor!! }
         arrowPositionList = builder.mArrowPosition
         targetViewScreenLocation = builder.mTargetViewScreenLocation
     }
 
-    private fun setShowCaseListener(builder: Builder){
-        imageViewClose?.setOnClickListener {builder.mListener?.onCloseActionImageClick()}
-        itemView?.setOnClickListener {builder.mListener?.onShowCaseClick()}
+    private fun setShowCaseListener(builder: Builder) {
+        btnNext?.setOnClickListener { builder.mListener?.onCloseActionImageClick() }
+        btnSkip?.setOnClickListener { builder.mListener?.onShowCaseSkip() }
+        imageViewClose?.setOnClickListener { builder.mListener?.onCloseActionImageClick() }
+        itemView?.setOnClickListener { builder.mListener?.onShowCaseClick() }
     }
 
 
@@ -123,7 +153,8 @@ class ShowCaseMessageView : ConstraintLayout {
 
     private fun getMargin(): Int = ScreenUtils.dpToPx(20)
 
-    private fun getSecurityArrowMargin(): Int = getMargin() + ScreenUtils.dpToPx(2 * WIDTH_ARROW / 3)
+    private fun getSecurityArrowMargin(): Int =
+        getMargin() + ScreenUtils.dpToPx(2 * WIDTH_ARROW / 3)
 
     //END REGION
 
@@ -148,32 +179,53 @@ class ShowCaseMessageView : ConstraintLayout {
     }
 
     private fun drawRectangle(canvas: Canvas) {
-        val rect = RectF(getMargin().toFloat(),
+        val rect = RectF(
+            getMargin().toFloat(),
             getMargin().toFloat(),
             getViewWidth() - getMargin().toFloat(),
-            height - getMargin().toFloat())
+            height - getMargin().toFloat()
+        )
         canvas.drawRoundRect(rect, 10f, 10f, paint!!)
     }
 
-    private fun drawArrow(canvas: Canvas, arrowPosition: ShowCase.ArrowPosition, targetViewLocationOnScreen: RectF?) {
+    private fun drawArrow(
+        canvas: Canvas,
+        arrowPosition: ShowCase.ArrowPosition,
+        targetViewLocationOnScreen: RectF?
+    ) {
         val xPosition: Int
         val yPosition: Int
 
         when (arrowPosition) {
             ShowCase.ArrowPosition.LEFT -> {
                 xPosition = getMargin()
-                yPosition = if(targetViewLocationOnScreen!=null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
+                yPosition =
+                    if (targetViewLocationOnScreen != null) getArrowVerticalPositionDependingOnTarget(
+                        targetViewLocationOnScreen
+                    ) else height / 2
             }
+
             ShowCase.ArrowPosition.RIGHT -> {
                 xPosition = getViewWidth() - getMargin()
-                yPosition = if(targetViewLocationOnScreen!=null) getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen) else height / 2
+                yPosition =
+                    if (targetViewLocationOnScreen != null) getArrowVerticalPositionDependingOnTarget(
+                        targetViewLocationOnScreen
+                    ) else height / 2
             }
+
             ShowCase.ArrowPosition.TOP -> {
-                xPosition = if(targetViewLocationOnScreen!=null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
+                xPosition =
+                    if (targetViewLocationOnScreen != null) getArrowHorizontalPositionDependingOnTarget(
+                        targetViewLocationOnScreen
+                    ) else width / 2
                 yPosition = getMargin()
             }
+
             ShowCase.ArrowPosition.BOTTOM -> {
-                xPosition = if(targetViewLocationOnScreen!=null) getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen) else width / 2
+                xPosition =
+                    if (targetViewLocationOnScreen != null) getArrowHorizontalPositionDependingOnTarget(
+                        targetViewLocationOnScreen
+                    ) else width / 2
                 yPosition = height - getMargin()
             }
         }
@@ -184,9 +236,15 @@ class ShowCaseMessageView : ConstraintLayout {
     private fun getArrowHorizontalPositionDependingOnTarget(targetViewLocationOnScreen: RectF?): Int {
         val xPosition: Int
         when {
-            isOutOfRightBound(targetViewLocationOnScreen) -> xPosition = width - getSecurityArrowMargin()
+            isOutOfRightBound(targetViewLocationOnScreen) -> xPosition =
+                width - getSecurityArrowMargin()
+
             isOutOfLeftBound(targetViewLocationOnScreen) -> xPosition = getSecurityArrowMargin()
-            else -> xPosition = Math.round(targetViewLocationOnScreen!!.centerX() - ScreenUtils.getAxisXpositionOfViewOnScreen(this))
+            else -> xPosition = Math.round(
+                targetViewLocationOnScreen!!.centerX() - ScreenUtils.getAxisXpositionOfViewOnScreen(
+                    this
+                )
+            )
         }
         return xPosition
     }
@@ -194,7 +252,9 @@ class ShowCaseMessageView : ConstraintLayout {
     private fun getArrowVerticalPositionDependingOnTarget(targetViewLocationOnScreen: RectF?): Int {
         val yPosition: Int
         when {
-            isOutOfBottomBound(targetViewLocationOnScreen) -> yPosition = height - getSecurityArrowMargin()
+            isOutOfBottomBound(targetViewLocationOnScreen) -> yPosition =
+                height - getSecurityArrowMargin()
+
             isOutOfTopBound(targetViewLocationOnScreen) -> yPosition = getSecurityArrowMargin()
             else -> yPosition =
                 (targetViewLocationOnScreen!!.centerY() + ScreenUtils.getStatusBarHeight(context) - ScreenUtils.getAxisYpositionOfViewOnScreen(
@@ -205,19 +265,27 @@ class ShowCaseMessageView : ConstraintLayout {
     }
 
     private fun isOutOfRightBound(targetViewLocationOnScreen: RectF?): Boolean {
-        return targetViewLocationOnScreen!!.centerX() > ScreenUtils.getAxisXpositionOfViewOnScreen(this) + width - getSecurityArrowMargin()
+        return targetViewLocationOnScreen!!.centerX() > ScreenUtils.getAxisXpositionOfViewOnScreen(
+            this
+        ) + width - getSecurityArrowMargin()
     }
 
     private fun isOutOfLeftBound(targetViewLocationOnScreen: RectF?): Boolean {
-        return targetViewLocationOnScreen!!.centerX() < ScreenUtils.getAxisXpositionOfViewOnScreen(this) + getSecurityArrowMargin()
+        return targetViewLocationOnScreen!!.centerX() < ScreenUtils.getAxisXpositionOfViewOnScreen(
+            this
+        ) + getSecurityArrowMargin()
     }
 
     private fun isOutOfBottomBound(targetViewLocationOnScreen: RectF?): Boolean {
-        return targetViewLocationOnScreen!!.centerY() > ScreenUtils.getAxisYpositionOfViewOnScreen(this) + height - getSecurityArrowMargin() - ScreenUtils.getStatusBarHeight(context)
+        return targetViewLocationOnScreen!!.centerY() > ScreenUtils.getAxisYpositionOfViewOnScreen(
+            this
+        ) + height - getSecurityArrowMargin() - ScreenUtils.getStatusBarHeight(context)
     }
 
     private fun isOutOfTopBound(targetViewLocationOnScreen: RectF?): Boolean {
-        return targetViewLocationOnScreen!!.centerY() < ScreenUtils.getAxisYpositionOfViewOnScreen(this) + getSecurityArrowMargin() - ScreenUtils.getStatusBarHeight(context)
+        return targetViewLocationOnScreen!!.centerY() < ScreenUtils.getAxisYpositionOfViewOnScreen(
+            this
+        ) + getSecurityArrowMargin() - ScreenUtils.getStatusBarHeight(context)
     }
 
 
@@ -241,7 +309,7 @@ class ShowCaseMessageView : ConstraintLayout {
     /**
      * Builder for ShowCaseMessageView class
      */
-    class Builder{
+    class Builder {
         lateinit var mContext: WeakReference<Context>
         var mTargetViewScreenLocation: RectF? = null
         var mImage: Drawable? = null
@@ -249,17 +317,24 @@ class ShowCaseMessageView : ConstraintLayout {
         var mTitle: String? = null
         var mSubtitle: String? = null
         var mCloseAction: Drawable? = null
+        var mShowButtons: Boolean? = null
         var mBackgroundColor: Int? = null
         var mTextColor: Int? = null
         var mTitleTextSize: Int? = null
         var mSubtitleTextSize: Int? = null
-        var mArrowPosition  = ArrayList<ShowCase.ArrowPosition>()
+        var mArrowPosition = ArrayList<ShowCase.ArrowPosition>()
         var mListener: OnShowCaseMessageViewListener? = null
 
-        fun from(context: Context): Builder{
+        fun from(context: Context): Builder {
             mContext = WeakReference(context)
             return this
         }
+
+        fun showButtons(showButtons: Boolean?): Builder {
+            mShowButtons = showButtons
+            return this
+        }
+
 
         fun title(title: String?): Builder {
             mTitle = title
@@ -286,7 +361,7 @@ class ShowCaseMessageView : ConstraintLayout {
             return this
         }
 
-        fun targetViewScreenLocation(targetViewLocationOnScreen: RectF): Builder{
+        fun targetViewScreenLocation(targetViewLocationOnScreen: RectF): Builder {
             mTargetViewScreenLocation = targetViewLocationOnScreen
             return this
         }
@@ -322,7 +397,7 @@ class ShowCaseMessageView : ConstraintLayout {
             return this
         }
 
-        fun build(): ShowCaseMessageView{
+        fun build(): ShowCaseMessageView {
             return ShowCaseMessageView(mContext.get()!!, this)
         }
     }

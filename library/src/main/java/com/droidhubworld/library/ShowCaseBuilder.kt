@@ -17,6 +17,7 @@ class ShowCaseBuilder {
     internal var mActivity: WeakReference<Activity>? = null
     internal var mImage: Drawable? = null
     internal var mTitle: String? = null
+    internal var mShowButtons: Boolean? = null
     internal var mSubtitle: String? = null
     internal var mCloseAction: Drawable? = null
     internal var mBackgroundColor: Int? = null
@@ -48,6 +49,13 @@ class ShowCaseBuilder {
      */
     fun title(title: String): ShowCaseBuilder {
         mTitle = title
+        return this
+    }
+    /**
+     * Show Buttons of the ShowCase. This i show and hide button.
+     */
+    fun showButtons(showButtons: Boolean): ShowCaseBuilder {
+        mShowButtons = showButtons
         return this
     }
 

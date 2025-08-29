@@ -11,4 +11,9 @@ interface OnShowCaseMessageViewListener {
      * It is called when a user clicks the ShowCaseMessageView
      */
     fun onShowCaseClick()
+
+    /**
+     * It is called when a user clicks the Skip
+     */
+    fun onShowCaseSkip()
 }

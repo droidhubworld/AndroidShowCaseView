@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Background gradient -->
+    <solid android:color="@color/button_disabled"/>
+
+    <!-- Rounded corners -->
+    <corners android:radius="16dp" />
+
+    <!-- Padding inside the button -->
+    <padding
+        android:left="12dp"
+        android:top="8dp"
+        android:right="12dp"
+        android:bottom="8dp" />
+
+    <!-- Optional border -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/button_disabled" />
+
+</shape>

@@ -56,6 +56,7 @@ class ShowCase(builder: ShowCaseBuilder) {
     //ShowCaseMessageView params
     private val mImage: Drawable? = builder.mImage
     private val mTitle: String? = builder.mTitle
+    private val mShowButtons: Boolean? = builder.mShowButtons
     private val mSubtitle: String? = builder.mSubtitle
     private val mCloseAction: Drawable? = builder.mCloseAction
     private val mBackgroundColor: Int? = builder.mBackgroundColor
@@ -147,7 +148,12 @@ class ShowCase(builder: ShowCaseBuilder) {
         }
     }
 
-    fun dismiss() {
+    fun dismiss(skip: Boolean = false) {
+        if (skip){
+            finishSequence()
+            notifyDismissToSequenceListener(true)
+            return
+        }
         if (backgroundDimLayout != null && isLastOfSequence) {
             //Remove background dim layout if the ShowCase is the last of the sequence
             finishSequence()
@@ -164,8 +170,8 @@ class ShowCase(builder: ShowCaseBuilder) {
         backgroundDimLayout = null
     }
 
-    private fun notifyDismissToSequenceListener() {
-        mSequenceListener?.let { mSequenceListener.onDismiss() }
+    private fun notifyDismissToSequenceListener(skip: Boolean = false) {
+        mSequenceListener?.let { mSequenceListener.onDismiss(skip) }
     }
 
     private fun getViewRoot(activity: Activity): ViewGroup {
@@ -208,10 +214,16 @@ class ShowCase(builder: ShowCaseBuilder) {
             .subtitle(mSubtitle)
             .image(mImage)
             .closeActionImage(mCloseAction)
+            .showButtons(mShowButtons)
             .disableCloseAction(mDisableCloseAction)
             .listener(object : OnShowCaseMessageViewListener {
                 override fun onShowCaseClick() {
                     mShowCaseListener?.onShowCaseClick(this@ShowCase)
+                }
+
+                override fun onShowCaseSkip() {
+                    dismiss(true)
+//                    mShowCaseListener?.onCloseActionImageClick(this@ShowCase)
                 }
 
                 override fun onCloseActionImageClick() {

@@ -42,8 +42,12 @@ class ShowCaseSequence {
             }
         }
         mShowCaseBuilderList[position].sequenceListener(object : ShowCaseSequenceListener {
-            override fun onDismiss() {
-                show(position + 1)
+            override fun onDismiss(skip: Boolean) {
+                if (skip) {
+                    show(mShowCaseBuilderList.size)
+                } else {
+                    show(position + 1)
+                }
             }
         }).show()
     }
