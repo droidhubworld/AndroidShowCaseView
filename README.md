@@ -76,6 +76,50 @@ For more information and examples, please check our [sample app](/app).
 If you have any issues or feedback, please visit [issue section](https://github.com/droidhubworld/AndroidShowCaseView/issues).
 Please feel free to collaborate with us making this framework as best as possible.
 
+### Handel Back Press
+
+Below it is showed an example for handel back press.
+
+## Add Back Pressed Dispatcher linke
+```kotlin
+
+private var allowBackPress = false
+fun setAllowBackPress(allow: Boolean) {
+   allowBackPress = allow
+}
+```
+## onCreate addCallback
+```
+onBackPressedDispatcher.addCallback(this) {
+  if (allowBackPress) {
+      // Block back press
+  } else {
+      isEnabled = false
+      onBackPressedDispatcher.onBackPressed()
+  }
+}
+```
+## And add ShowCase listener and override
+```
+override fun onShowCaseShow(showCase: ShowCase) {
+    setAllowBackPress(true)
+}
+
+override fun onShowCaseTargetClick(showCase: ShowCase) {
+
+}
+
+override fun onShowCaseCloseActionClick(showCase: ShowCase,skip: Boolean) {
+    setAllowBackPress(false)
+}
+
+override fun onShowCaseBackgroundDimClick(showCase: ShowCase) {
+    setAllowBackPress(false)
+}
+
+override fun onShowCaseClick(showCase: ShowCase) {
+}
+```
 ## License
 
 `ShowCase-Android` is available under the MIT license. See the [LICENSE](/LICENSE) file for more info.
