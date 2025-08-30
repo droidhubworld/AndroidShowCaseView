@@ -111,16 +111,21 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "OnClick", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onBackgroundDimClick(showCase: ShowCase) {
+                override fun onShowCaseBackgroundDimClick(showCase: ShowCase) {
                     Toast.makeText(this@MainActivity, "OnBackgroundDimClick", Toast.LENGTH_SHORT)
                         .show()
                 }
 
-                override fun onTargetClick(showCase: ShowCase) {
+                override fun onShowCaseShow(showCase: ShowCase) {
+                    Toast.makeText(this@MainActivity, "onShowCaseShow", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onShowCaseTargetClick(showCase: ShowCase) {
                     Toast.makeText(this@MainActivity, "OnTargetClick", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onCloseActionImageClick(showCase: ShowCase) {
+                override fun onShowCaseCloseActionClick(showCase: ShowCase,skip: Boolean) {
                     Toast.makeText(this@MainActivity, "OnClose", Toast.LENGTH_SHORT).show()
                 }
             })

@@ -1,6 +1,7 @@
 package com.droidhubworld.showcaseview
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,10 +10,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.droidhubworld.library.ShowCase
 import com.droidhubworld.library.ShowCaseBuilder
 import com.droidhubworld.library.ShowCaseSequence
+import com.droidhubworld.library.calback.ShowCaseListener
 import com.droidhubworld.showcaseview.databinding.ActivityScrollViewBinding
 
-class ScrollViewActivity : AppCompatActivity() {
+class ScrollViewActivity : AppCompatActivity(), ShowCaseListener {
     private lateinit var mBinding: ActivityScrollViewBinding
+
+    private var allowBackPress = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,6 +30,15 @@ class ScrollViewActivity : AppCompatActivity() {
             insets
         }
 
+        onBackPressedDispatcher.addCallback(this) {
+            if (allowBackPress) {
+                // Block back press
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
         mBinding.btnOpenShowCase.setOnClickListener {
             getSequenceShowCase().show()
         }
@@ -33,7 +47,9 @@ class ScrollViewActivity : AppCompatActivity() {
         }
     }
 
-
+    fun setAllowBackPress(allow: Boolean) {
+        allowBackPress = allow
+    }
     private fun getSequenceShowCase(): ShowCaseSequence {
         val viewList = listOf(
             /*ShowCaseData(
@@ -110,5 +126,25 @@ class ScrollViewActivity : AppCompatActivity() {
             .arrowPosition(showCaseData.arrowPosition)
             .showButtons(true)
             .targetView(showCaseData.view)
+            .listener(this)
+    }
+
+    override fun onShowCaseShow(showCase: ShowCase) {
+        setAllowBackPress(true)
+    }
+
+    override fun onShowCaseTargetClick(showCase: ShowCase) {
+
+    }
+
+    override fun onShowCaseCloseActionClick(showCase: ShowCase,skip: Boolean) {
+        setAllowBackPress(false)
+    }
+
+    override fun onShowCaseBackgroundDimClick(showCase: ShowCase) {
+        setAllowBackPress(false)
+    }
+
+    override fun onShowCaseClick(showCase: ShowCase) {
     }
 }

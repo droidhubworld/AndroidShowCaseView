@@ -1,6 +1,7 @@
 package com.droidhubworld.library
 
 import com.droidhubworld.library.calback.ShowCaseSequenceListener
+import kotlin.reflect.KClass
 
 class ShowCaseSequence {
     private val mShowCaseBuilderList = ArrayList<ShowCaseBuilder>()
@@ -41,6 +42,7 @@ class ShowCaseSequence {
                 mShowCaseBuilderList[position].isLastOfSequence(false)
             }
         }
+
         mShowCaseBuilderList[position].sequenceListener(object : ShowCaseSequenceListener {
             override fun onDismiss(skip: Boolean) {
                 if (skip) {

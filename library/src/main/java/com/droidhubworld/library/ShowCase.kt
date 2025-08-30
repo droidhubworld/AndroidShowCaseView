@@ -145,12 +145,14 @@ class ShowCase(builder: ShowCaseBuilder) {
                         animation
                     )
                 )
+                mShowCaseListener?.onShowCaseShow(this)
             }
         }
     }
 
     fun dismiss(skip: Boolean = false) {
         if (skip){
+            mShowCaseListener?.onShowCaseCloseActionClick(this@ShowCase,skip)
             finishSequence()
             notifyDismissToSequenceListener(true)
             return
@@ -200,7 +202,7 @@ class ShowCase(builder: ShowCaseBuilder) {
     }
 
     private fun setBackgroundDimListener(backgroundDimLayout: RelativeLayout?) {
-        backgroundDimLayout?.setOnClickListener { mShowCaseListener?.onBackgroundDimClick(this) }
+        backgroundDimLayout?.setOnClickListener { mShowCaseListener?.onShowCaseBackgroundDimClick(this) }
     }
 
     private fun getShowCaseMessageViewBuilder(): ShowCaseMessageView.Builder {
@@ -224,12 +226,11 @@ class ShowCase(builder: ShowCaseBuilder) {
 
                 override fun onShowCaseSkip() {
                     dismiss(true)
-                    mShowCaseListener?.onCloseActionImageClick(this@ShowCase)
                 }
 
                 override fun onCloseActionImageClick() {
                     dismiss()
-                    mShowCaseListener?.onCloseActionImageClick(this@ShowCase)
+                    mShowCaseListener?.onShowCaseCloseActionClick(this@ShowCase)
                 }
 
             })
@@ -274,7 +275,7 @@ class ShowCase(builder: ShowCaseBuilder) {
         targetScreenshotView.setOnClickListener {
             if (!mDisableTargetClick)
                 dismiss()
-            mShowCaseListener?.onTargetClick(this)
+            mShowCaseListener?.onShowCaseTargetClick(this)
         }
 
         val targetViewParams = RelativeLayout.LayoutParams(

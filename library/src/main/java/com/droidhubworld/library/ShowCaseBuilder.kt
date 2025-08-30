@@ -231,8 +231,8 @@ class ShowCaseBuilder {
      * - onTargetClick -> It is triggered when the user clicks on the target view
      * - onCloseClick -> It is triggered when the user clicks on the close icon
      */
-    fun listener(ShowCaseListener: ShowCaseListener): ShowCaseBuilder {
-        mShowCaseListener = ShowCaseListener
+    fun listener(showCaseListener: ShowCaseListener): ShowCaseBuilder {
+        mShowCaseListener = showCaseListener
         return this
     }
 
