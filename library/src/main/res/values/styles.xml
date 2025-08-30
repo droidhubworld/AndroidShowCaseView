@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ButtonDefault" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+</resources>

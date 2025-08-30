@@ -106,15 +106,18 @@ class ShowCaseMessageView : ConstraintLayout {
                 btnNext?.visibility = VISIBLE
                 btnSkip?.visibility = VISIBLE
                 btnDividerView?.visibility = VISIBLE
+                imageViewClose?.visibility = GONE
             } else {
                 btnNext?.visibility = GONE
                 btnSkip?.visibility = GONE
                 btnDividerView?.visibility = GONE
+                imageViewClose?.visibility = VISIBLE
             }
-        } ?: {
+        } ?:run {
             btnNext?.visibility = GONE
             btnSkip?.visibility = GONE
             btnDividerView?.visibility = GONE
+            imageViewClose?.visibility = VISIBLE
         }
         builder.mTextColor?.let {
             textViewTitle?.setTextColor(builder.mTextColor!!)

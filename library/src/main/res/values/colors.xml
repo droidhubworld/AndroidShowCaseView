@@ -3,8 +3,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent_grey">#77000000</color>
     <color name="blue_default">#3F51B5</color>
-    <color name="button_default">#B3B3B3</color>
-    <color name="button_pressed">#9E9E9E</color>
-    <color name="button_disabled">#6A5E5E</color>
+    <color name="button_default">#6AB3B3B3</color>
+    <color name="button_pressed">#74B3B3B3</color>
+    <color name="button_disabled">#525252</color>
 
 </resources>

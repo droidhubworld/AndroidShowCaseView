@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.droidhubworld.library.ShowCase
 import com.droidhubworld.library.ShowCaseBuilder
 import com.droidhubworld.library.ShowCaseSequence
 import com.droidhubworld.showcaseview.databinding.ActivityScrollViewBinding
@@ -105,7 +106,9 @@ class ScrollViewActivity : AppCompatActivity() {
         return ShowCaseBuilder(this)
             .title(showCaseData.title)
             .description(showCaseData.description)
-            .backgroundColor(ContextCompat.getColor(this,R.color.teal_700))
+            .backgroundColor(ContextCompat.getColor(this, R.color.teal_700))
+            .arrowPosition(showCaseData.arrowPosition)
+            .showButtons(true)
             .targetView(showCaseData.view)
     }
 }

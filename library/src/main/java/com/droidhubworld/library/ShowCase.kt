@@ -11,6 +11,7 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -29,8 +30,8 @@ class ShowCase(builder: ShowCaseBuilder) {
     private val FOREGROUND_LAYOUT_ID = 731
 
     private val DURATION_SHOW_CASE_ANIMATION = 200 //ms
-    private val DURATION_BACKGROUND_ANIMATION = 700 //ms
-    private val DURATION_BEATING_ANIMATION = 700 //ms
+    private val DURATION_BACKGROUND_ANIMATION = 500 //ms
+    private val DURATION_BEATING_ANIMATION = 500 //ms
 
     private val MAX_WIDTH_MESSAGE_VIEW_TABLET = 420 //dp
 
@@ -97,7 +98,7 @@ class ShowCase(builder: ShowCaseBuilder) {
 
         if (mTargetView != null && mArrowPositionList.size <= 1) {
             //Wait until the end of the layout animation, to avoid problems with pending scrolls or view movements
-            val handler = Handler()
+            val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 val target = mTargetView.get()!!
                 //If the arrow list is empty, the arrow position is set by default depending on the targetView position on the screen
@@ -223,7 +224,7 @@ class ShowCase(builder: ShowCaseBuilder) {
 
                 override fun onShowCaseSkip() {
                     dismiss(true)
-//                    mShowCaseListener?.onCloseActionImageClick(this@ShowCase)
+                    mShowCaseListener?.onCloseActionImageClick(this@ShowCase)
                 }
 
                 override fun onCloseActionImageClick() {
